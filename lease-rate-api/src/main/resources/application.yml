@@ -1,0 +1,9 @@
+server:
+    port: 9999
+spring:
+    application:
+        name: lease-rate-api
+eureka:
+    client:
+        service-url:
+            defaultZone: http://localhost:8761/eureka/

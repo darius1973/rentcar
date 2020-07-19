@@ -1,0 +1,9 @@
+server:
+    port: 9988
+spring:
+    application:
+        name: customers-api
+eureka:
+    client:
+        service-url:
+            defaultZone: http://localhost:8761/eureka/
