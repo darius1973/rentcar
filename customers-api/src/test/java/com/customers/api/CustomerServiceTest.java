@@ -1,105 +1,102 @@
-package com.car.data.api;
+package com.customers.api;
 
-import com.car.data.api.exception.CarDataNotFoundException;
-
-import domain.CarData;
+import com.customers.api.exception.CustomerNotFoundException;
+import domain.Customer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import repositories.CarDataRepository;
+import repositories.CustomerRepository;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CarDataServiceTest {
+public class CustomerServiceTest {
 
     @Mock
-    private CarDataRepository carDataRepository;
+    private CustomerRepository customerRepository;
 
     @InjectMocks
-    private CarDataService carDataService;
+    private CustomerService customerService;
 
-    private CarData carData;
+    private Customer customer;
 
 
     @Before
     public void setUp() throws Exception {
-        carData = carData();
+        customer = customer();
     }
 
 
     @Test
-    public void retrieveCarData() throws Exception {
+    public void retrieveCustomer() throws Exception {
 
 
-        when(carDataRepository.findByLicensePlate("12MVC01")).thenReturn(Optional.of(carData));
+        when(customerRepository.findById("007")).thenReturn(Optional.of(customer));
 
-        CarData carData = carDataService.retrieveCarData("12MVC01");
+        Customer customerData = customerService.retrieveCustomer("007");
 
-        assertThat(carData.getLicensePlate()).isEqualTo("12MVC01");
-        assertThat(carData.getModel()).isEqualTo("Ford T");
+        assertThat(customerData.getCid()).isEqualTo("007");
+        assertThat(customerData.getName()).isEqualTo("Bond");
     }
 
     @Test
-    public void retrieveCarDataException() throws Exception {
+    public void retrieveCustomerException() throws Exception {
 
         assertThatThrownBy(() -> {
-            carDataService.retrieveCarData("DUMMY");
-        }).isInstanceOf(CarDataNotFoundException.class)
-                .hasMessage("licensePlate: DUMMY");
+            customerService.retrieveCustomer("DUMMY");
+        }).isInstanceOf(CustomerNotFoundException.class)
+                .hasMessage("customer id: DUMMY");
     }
 
 
     @Test
-    public void deleteCarData() throws Exception {
+    public void deleteCustomerData() throws Exception {
 
-        carDataService.deleteCarData("01MVV3");
+        customerService.deleteCustomerData("007");
 
-        verify(carDataRepository, times(1)).deleteById("01MVV3");
+        verify(customerRepository, times(1)).deleteById("007");
     }
 
     @Test
     public void persist() throws Exception {
 
-        when(carDataRepository.save(carData)).thenReturn(carData);
+        when(customerRepository.save(customer)).thenReturn(customer);
 
-        CarData persistedCarData = carDataService.persist(carData);
+        Customer persistedCustomer = customerService.persist(customer);
 
-        assertThat(persistedCarData).isEqualTo(carData);
+        assertThat(persistedCustomer).isEqualTo(customer);
     }
 
     @Test
-    public void updateCarDataFound() throws Exception {
-        when(carDataRepository.findById("12MVC01")).thenReturn(Optional.of(carData));
+    public void updateCustomerFound() throws Exception {
+        when(customerRepository.findById("007")).thenReturn(Optional.of(customer));
 
-        String updatedLicensePlate = carDataService.updateCarData(carData, "12MVC01");
+        String updatedCustomerId = customerService.updateCustomerData(customer, "007");
 
-        assertThat(updatedLicensePlate).isEqualTo("12MVC01");
+        assertThat(updatedCustomerId).isEqualTo("007");
     }
 
     @Test
     public void updateCarDataNotFound() throws Exception {
 
-        String updatedLicensePlate = carDataService.updateCarData(carData, "DUMMY");
+        String updatedCustomerId = customerService.updateCustomerData(customer, "DUMMY");
 
-        assertThat(updatedLicensePlate).isNull();
+        assertThat(updatedCustomerId).isNull();
     }
 
 
-    private CarData carData() {
-        CarData carData = new CarData();
-        carData.setLicensePlate("12MVC01");
-        carData.setModel("Ford T");
-        return carData;
+    private Customer customer() {
+        Customer customer = new Customer();
+        customer.setCid("007");
+        customer.setName("Bond");
+        return customer;
     }
 
 }

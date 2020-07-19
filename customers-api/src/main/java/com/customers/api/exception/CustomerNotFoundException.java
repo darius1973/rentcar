@@ -1,7 +1,7 @@
-package com.car.data.api.exception;
+package com.customers.api.exception;
 
-public class CarDataNotFoundException extends RuntimeException{
-    public CarDataNotFoundException(String message) {
+public class CustomerNotFoundException extends RuntimeException{
+    public CustomerNotFoundException(String message) {
         super(message);
     }
 }

@@ -1,6 +1,7 @@
-package com.car.data.api;
+package com.customers.api;
 
 import domain.CarData;
+import domain.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,35 +11,35 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-public  class CarDataResource {
+public  class CustomerDataResource {
 
     @Autowired
-    private CarDataService carDataService;
+    private CustomerService customerService;
 
-    @GetMapping("/cardata/{licensePlate}")
-    public CarData retrieveCarData(@PathVariable String  licensePlate) {
-        return carDataService.retrieveCarData(licensePlate);
+    @GetMapping("/customer/{cid}")
+    public Customer retrieveCustomer(@PathVariable String  cid) {
+        return customerService.retrieveCustomer(cid);
     }
 
 
-    @DeleteMapping("/cardata/{licensePlate}")
-    public ResponseEntity<HttpStatus> deleteCarData(@PathVariable String licensePlate) {
-        carDataService.deleteCarData(licensePlate);
+    @DeleteMapping("/customer/{cid}")
+    public ResponseEntity<HttpStatus> deleteCustomer(@PathVariable String cid) {
+        customerService.deleteCustomerData(cid);
         return new ResponseEntity<HttpStatus>(HttpStatus.ACCEPTED);
     }
 
-    @PostMapping("/cardata")
-    public ResponseEntity<CarData> createCarData(@Valid @RequestBody CarData carData) {
-        CarData savedCarData = carDataService.persist(carData);
-        return new ResponseEntity(carData, HttpStatus.CREATED);
+    @PostMapping("/customer")
+    public ResponseEntity<CarData> createCustomer(@Valid @RequestBody Customer customer) {
+        Customer savedCustomer = customerService.persist(customer);
+        return new ResponseEntity(customer, HttpStatus.CREATED);
     }
-    @PutMapping(value = "/cardata/{licensePlate}")
-    public ResponseEntity<CarData> updateCarData(@PathVariable String licensePlate, @Valid @RequestBody CarData carData) {
-        String updatedCarLicensePlate = carDataService.updateCarData(carData, licensePlate);
-        if(StringUtils.isEmpty(updatedCarLicensePlate)) {
+    @PutMapping(value = "/customer/{cid}")
+    public ResponseEntity<Customer> updateCustomer(@PathVariable String cid, @Valid @RequestBody Customer customer) {
+        String updatedCustomer = customerService.updateCustomerData(customer, cid);
+        if(StringUtils.isEmpty(updatedCustomer)) {
             return ResponseEntity.notFound().build();
         } else {
-            return new ResponseEntity<>(carData, HttpStatus.OK);
+            return new ResponseEntity<>(customer, HttpStatus.OK);
         }
     }
 }

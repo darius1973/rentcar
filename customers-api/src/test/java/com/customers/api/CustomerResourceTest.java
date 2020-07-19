@@ -1,7 +1,8 @@
-package com.car.data.api;
+package com.customers.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import domain.CarData;
+import domain.Customer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,73 +21,70 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @WebAppConfiguration
-public class CarDataResourceTest {
+public class CustomerResourceTest {
 
     @Autowired
-    private CarDataService carDataService;
+    private CustomerService customerService;
     @Autowired
     private WebApplicationContext wac;
 
     private MockMvc mvc;
 
-    private CarData carData;
+    private Customer customer;
 
     @Before
     public void setUp() throws Exception {
         mvc = MockMvcBuilders.webAppContextSetup(wac).build();
-        carData = carData();
+        customer = customer();
     }
 
     @Test
-    public void retrieveCarData() throws Exception {
+    public void retrieveCustomer() throws Exception {
 
-      when(carDataService.retrieveCarData("12MVC01")).thenReturn(carData());
+      when(customerService.retrieveCustomer("007")).thenReturn(customer);
 
-      mvc.perform(MockMvcRequestBuilders.get("/cardata/{licensePlate}","12MVC01")
+      mvc.perform(MockMvcRequestBuilders.get("/customer/{cid}","007")
               .accept(MediaType.APPLICATION_JSON))
               .andExpect(status().isOk())
               .andDo(print())
               .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-              .andExpect(jsonPath("$.licensePlate").value("12MVC01"))
-              .andExpect(jsonPath("$.model").value("Ford T"));
+              .andExpect(jsonPath("$.cid").value("007"))
+              .andExpect(jsonPath("$.name").value("Bond"));
     }
 
-    private CarData carData() {
-        CarData carData = new CarData();
-        carData.setLicensePlate("12MVC01");
-        carData.setModel("Ford T");
-        return carData;
+    private Customer customer() {
+        Customer customer = new Customer();
+        customer.setCid("007");
+        customer.setName("Bond");
+        return customer;
     }
 
     @Test
-    public void deleteCarData() throws Exception {
-        mvc.perform( MockMvcRequestBuilders.delete("/cardata/{licensePlate}", "12MVC01") )
+    public void deleteCustomerData() throws Exception {
+        mvc.perform( MockMvcRequestBuilders.delete("/customer/{cid}", "007") )
                 .andExpect(status().isAccepted());
     }
 
     @Test
-    public void createCarData() throws Exception {
+    public void createCustomer() throws Exception {
 
-        when(carDataService.persist(carData)).thenReturn(carData);
+        when(customerService.persist(customer)).thenReturn(customer);
 
         mvc.perform( MockMvcRequestBuilders
-                .post("/cardata")
-                .content(asJsonString(carData))
+                .post("/customer")
+                .content(asJsonString(customer))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.licensePlate").value("12MVC01"))
-                .andExpect(jsonPath("$.model").value("Ford T"));
+                .andExpect(jsonPath("$.cid").value("007"))
+                .andExpect(jsonPath("$.name").value("Bond"));
     }
 
     public static String asJsonString(final Object obj) {
@@ -98,39 +96,39 @@ public class CarDataResourceTest {
     }
 
     @Test
-    public void updateCarDataNotFound() throws Exception {
+    public void updateCustomerNotFound() throws Exception {
 
-        when(carDataService.updateCarData(carData, "12MVC01")).thenReturn(null);
+        when(customerService.updateCustomerData(customer, "007")).thenReturn(null);
 
         mvc.perform( MockMvcRequestBuilders
-                .put("/cardata/{licensePlate}", "12MVC01")
-                .content(asJsonString(carData))
+                .put("/customer/{cid}", "007")
+                .content(asJsonString(customer))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    public void updateCarDataSuccess() throws Exception {
+    public void updateCustomerSuccess() throws Exception {
 
-        when(carDataService.updateCarData(any(CarData.class), eq("12MVC01"))).thenReturn("12MVC01");
+        when(customerService.updateCustomerData(any(Customer.class), eq("007"))).thenReturn("007");
 
         mvc.perform( MockMvcRequestBuilders
-                .put("/cardata/{licensePlate}", "12MVC01")
-                .content(asJsonString(carData))
+                .put("/customer/{cid}", "007")
+                .content(asJsonString(customer))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.licensePlate").value("12MVC01"))
-                .andExpect(jsonPath("$.model").value("Ford T"));
+                .andExpect(jsonPath("$.cid").value("007"))
+                .andExpect(jsonPath("$.name").value("Bond"));
 
     }
 
     @TestConfiguration
     static class Config {
         @MockBean
-        private CarDataService carDataService;
+        private CustomerService customerService;
     }
 
 }

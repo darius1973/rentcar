@@ -1,45 +1,46 @@
-package com.car.data.api;
+package com.customers.api;
 
-import com.car.data.api.exception.CarDataNotFoundException;
-import domain.CarData;
+
+import com.customers.api.exception.CustomerNotFoundException;
+import domain.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repositories.CarDataRepository;
+import repositories.CustomerRepository;
 
 import java.util.Optional;
 
 
 @Service
-public class CarDataService {
+public class CustomerService {
 
     @Autowired
-    private CarDataRepository carDataRepository;
+    private CustomerRepository customerRepository;
 
 
-    public CarData retrieveCarData(String licensePlate) {
-        Optional<CarData> carData = carDataRepository.findByLicensePlate(licensePlate);
-        if(!carData.isPresent()) {
-            throw new CarDataNotFoundException("licensePlate: " + licensePlate);
+    public Customer retrieveCustomer(String cid) {
+        Optional<Customer> customer = customerRepository.findById(cid);
+        if(!customer.isPresent()) {
+            throw new CustomerNotFoundException("customer id: " + cid);
         }
-        return carData.get();
+        return customer.get();
     }
 
-    public void deleteCarData(String licensePlate) {
-        carDataRepository.deleteById(licensePlate);
+    public void deleteCustomerData(String cid) {
+        customerRepository.deleteById(cid);
     }
 
-    public CarData persist(CarData carData) {
-        return carDataRepository.save(carData);
+    public Customer persist(Customer customer) {
+        return customerRepository.save(customer);
     }
 
-    public String  updateCarData(CarData carData, String licensePlate) {
-        Optional<CarData> carDataOptional = carDataRepository.findById(licensePlate);
-        if(!carDataOptional.isPresent()) {
+    public String  updateCustomerData(Customer customer, String cid) {
+        Optional<Customer> customerOptional = customerRepository.findById(cid);
+        if(!customerOptional.isPresent()) {
             return null;
         } else {
-            carData.setLicensePlate(licensePlate);
-            carDataRepository.save(carData);
-            return licensePlate;
+            customer.setCid(cid);
+            customerRepository.save(customer);
+            return cid;
         }
     }
 }
