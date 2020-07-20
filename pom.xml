@@ -22,6 +22,7 @@
         <module>rent-car-data</module>
         <module>service-registry</module>
         <module>lease-rate-api</module>
+        <module>docs</module>
     </modules>
     <dependencies>
         <dependency>
