@@ -27,7 +27,7 @@ public class LeaseRateService {
         CarData carData = serviceAccessor.getCarDataFor(contract.getLicensePlate());
         Customer customer = serviceAccessor.getCustomerFor(contract.getCid());
         Double leaseRate = leaseCalculator.calculateLeaseRateFor(customer, carData, contract);
-        contract.setLeaseRate(leaseCalculator.calculateLeaseRateFor(customer, carData, contract));
+        contract.setLeaseRate(leaseRate);
         contractRepository.save(contract);
         return leaseRate;
     }
