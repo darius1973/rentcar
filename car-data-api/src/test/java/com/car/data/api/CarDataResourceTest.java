@@ -20,11 +20,8 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -61,9 +58,16 @@ public class CarDataResourceTest {
     }
 
     private CarData carData() {
+
         CarData carData = new CarData();
         carData.setLicensePlate("12MVC01");
         carData.setModel("Ford T");
+        carData.setMake("Ford");
+        carData.setCo2Emission(4.50);
+        carData.setNbrOfDoors(5);
+        carData.setVersion("K");
+        carData.setGrossPrice(1000.00);
+        carData.setNetPrice(6000.00);
         return carData;
     }
 

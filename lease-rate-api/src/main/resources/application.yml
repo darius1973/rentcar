@@ -1,0 +1,17 @@
+server:
+    port: 9999
+spring:
+    application:
+        name: lease-rate-api
+eureka:
+    client:
+        service-url:
+            defaultZone: http://localhost:8761/eureka/
+car-data:
+  name: car-data-api
+  scheme: http
+  path: /cardata/
+customer:
+  name: customer
+  scheme: http
+  path: /customer/
