@@ -27,10 +27,10 @@ public class LeaseRateService {
 
         CarData carData = serviceAccessor.getCarDataFor(contract.getLicensePlate());
         Customer customer = serviceAccessor.getCustomerFor(contract.getCid());
-        if(carData.equals(null)) {
+        if(carData == null) {
             throw new LeaseRateCalculatorException("Missing car data info for license plate " + contract.getLicensePlate());
         }
-        if(customer.equals(null)) {
+        if(customer == null) {
             throw new LeaseRateCalculatorException("Missing customer info for customer id  " + contract.getCid());
         }
         Double leaseRate = leaseCalculator.calculateLeaseRateFor(carData, contract);
