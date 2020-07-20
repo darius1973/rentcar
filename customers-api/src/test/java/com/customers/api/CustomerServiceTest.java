@@ -96,6 +96,12 @@ public class CustomerServiceTest {
         Customer customer = new Customer();
         customer.setCid("007");
         customer.setName("Bond");
+        customer.setStreet("DS");
+        customer.setHouseNumber("11");
+        customer.setZipCode("11AVV");
+        customer.setEmail("a@bcd.com");
+        customer.setPhoneNumber("1234");
+        customer.setPlace("LDN");
         return customer;
     }
 

@@ -1,7 +1,6 @@
 package com.customers.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import domain.CarData;
 import domain.Customer;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,6 +61,12 @@ public class CustomerResourceTest {
         Customer customer = new Customer();
         customer.setCid("007");
         customer.setName("Bond");
+        customer.setStreet("DS");
+        customer.setHouseNumber("11");
+        customer.setZipCode("11AVV");
+        customer.setEmail("a@bcd.com");
+        customer.setPhoneNumber("1234");
+        customer.setPlace("LDN");
         return customer;
     }
 

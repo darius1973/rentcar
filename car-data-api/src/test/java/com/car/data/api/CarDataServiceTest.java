@@ -1,7 +1,6 @@
 package com.car.data.api;
 
 import com.car.data.api.exception.CarDataNotFoundException;
-
 import domain.CarData;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,9 +14,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CarDataServiceTest {
@@ -99,6 +96,12 @@ public class CarDataServiceTest {
         CarData carData = new CarData();
         carData.setLicensePlate("12MVC01");
         carData.setModel("Ford T");
+        carData.setMake("Ford");
+        carData.setCo2Emission(4.50);
+        carData.setNbrOfDoors(5);
+        carData.setVersion("K");
+        carData.setGrossPrice(1000.00);
+        carData.setNetPrice(6000.00);
         return carData;
     }
 
