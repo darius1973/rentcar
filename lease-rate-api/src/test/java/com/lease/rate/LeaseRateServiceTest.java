@@ -1,5 +1,6 @@
 package com.lease.rate;
 
+import com.lease.rate.exception.LeaseRateCalculatorException;
 import domain.CarData;
 import domain.Contract;
 import domain.Customer;
@@ -12,6 +13,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import repositories.ContractRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -57,6 +59,28 @@ public class LeaseRateServiceTest {
         verify(contractRepository).save(contract);
         assertThat(leaseRate).isEqualTo(0.70);
 
+    }
+
+
+    @Test
+    public void calculateLeaseRateNoCarData() throws Exception {
+
+        when(serviceAccessor.getCustomerFor("007")).thenReturn(customer);
+        assertThatThrownBy(() -> {
+            leaseRateService.calculateLeaseRate(contract);
+        }).isInstanceOf(LeaseRateCalculatorException.class)
+                .hasMessage("Missing car data info for license plate " + contract.getLicensePlate());
+    }
+
+    @Test
+    public void calculateLeaseRateNoCustomer() throws Exception {
+
+        when(serviceAccessor.getCarDataFor("12MVC01")).thenReturn(carData);
+
+        assertThatThrownBy(() -> {
+            leaseRateService.calculateLeaseRate(contract);
+        }).isInstanceOf(LeaseRateCalculatorException.class)
+                .hasMessage("Missing customer info for customer id  " + contract.getCid());
     }
 
     private CarData carData() {
