@@ -50,7 +50,7 @@ public class LeaseRateServiceTest {
     public void calculateLeaseRate() throws Exception {
         when(serviceAccessor.getCarDataFor("12MVC01")).thenReturn(carData);
         when(serviceAccessor.getCustomerFor("007")).thenReturn(customer);
-        when(leaseCalculator.calculateLeaseRateFor(customer, carData, contract)).thenReturn(0.70);
+        when(leaseCalculator.calculateLeaseRateFor(carData, contract)).thenReturn(0.70);
 
         Double leaseRate = leaseRateService.calculateLeaseRate(contract);
 
